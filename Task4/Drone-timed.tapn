@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<pnml xmlns="http://www.informatik.hu-berlin.de/top/pnml/ptNetb">
+  <net active="true" id="Drone" type="P/T net">
+    <place displayName="true" id="Positioning" initialMarking="0" invariant="&lt; inf" name="Positioning" nameOffsetX="0" nameOffsetY="0" positionX="255" positionY="240"/>
+    <place displayName="true" id="ready_state" initialMarking="1" invariant="&lt; inf" name="ready_state" nameOffsetX="0" nameOffsetY="0" positionX="435" positionY="30"/>
+    <place displayName="true" id="position_optimize" initialMarking="0" invariant="&lt; inf" name="position_optimize" nameOffsetX="0" nameOffsetY="0" positionX="390" positionY="300"/>
+    <place displayName="true" id="position_found" initialMarking="0" invariant="&lt; inf" name="position_found" nameOffsetX="90" nameOffsetY="41" positionX="660" positionY="390"/>
+    <place displayName="true" id="path_info" initialMarking="0" invariant="&lt; inf" name="path_info" nameOffsetX="113" nameOffsetY="11" positionX="720" positionY="135"/>
+    <transition angle="0" displayName="true" id="position_verify" infiniteServer="false" name="position_verify" nameOffsetX="28" nameOffsetY="-5" player="0" positionX="540" positionY="300" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="Drone_path" infiniteServer="false" name="Drone_path" nameOffsetX="86" nameOffsetY="21" player="0" positionX="720" positionY="255" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="field_navigation" infiniteServer="false" name="field_navigation" nameOffsetX="0" nameOffsetY="0" player="0" positionX="240" positionY="75" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="check_position" infiniteServer="false" name="check_position" nameOffsetX="0" nameOffsetY="0" player="0" positionX="255" positionY="405" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="data_to_server" infiniteServer="false" name="data_to_server" nameOffsetX="49" nameOffsetY="-7" player="0" positionX="615" positionY="60" priority="0" urgent="false"/>
+    <arc id="A1" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="ready_state" target="field_navigation" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="435" yCoord="48"/>
+      <arcpath arcPointType="false" id="1" xCoord="259" yCoord="90"/>
+    </arc>
+    <arc id="A2" inscription="1" nameOffsetX="0" nameOffsetY="0" source="field_navigation" target="Positioning" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="255" yCoord="105"/>
+      <arcpath arcPointType="false" id="1" xCoord="268" yCoord="240"/>
+    </arc>
+    <arc id="A3" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="Positioning" target="check_position" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="270" yCoord="270"/>
+      <arcpath arcPointType="false" id="1" xCoord="270" yCoord="405"/>
+    </arc>
+    <arc id="A4" inscription="1" nameOffsetX="0" nameOffsetY="0" source="check_position" target="position_optimize" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="274" yCoord="420"/>
+      <arcpath arcPointType="false" id="1" xCoord="393" yCoord="324"/>
+    </arc>
+    <arc id="A5" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="position_optimize" target="position_verify" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="420" yCoord="315"/>
+      <arcpath arcPointType="false" id="1" xCoord="549" yCoord="315"/>
+    </arc>
+    <arc id="A8" inscription="1" nameOffsetX="0" nameOffsetY="0" source="position_verify" target="position_found" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="559" yCoord="315"/>
+      <arcpath arcPointType="false" id="1" xCoord="663" yCoord="395"/>
+    </arc>
+    <arc id="A9" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="position_found" target="Drone_path" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="681" yCoord="391"/>
+      <arcpath arcPointType="false" id="1" xCoord="735" yCoord="285"/>
+    </arc>
+    <arc id="A10" inscription="1" nameOffsetX="0" nameOffsetY="0" source="Drone_path" target="path_info" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="735" yCoord="255"/>
+      <arcpath arcPointType="false" id="1" xCoord="735" yCoord="165"/>
+    </arc>
+    <arc id="A11" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="path_info" target="data_to_server" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="722" yCoord="141"/>
+      <arcpath arcPointType="false" id="1" xCoord="634" yCoord="75"/>
+    </arc>
+    <arc id="A12" inscription="1" nameOffsetX="0" nameOffsetY="0" source="data_to_server" target="ready_state" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="624" yCoord="75"/>
+      <arcpath arcPointType="false" id="1" xCoord="464" yCoord="47"/>
+    </arc>
+  </net>
+  <query active="true" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="false" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="Absence of deadlock" overApproximation="false" pTrie="true" query="AG !(deadlock)" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" useStubbornReduction="true" useTarOption="false"/>
+  <query active="true" approximationDenominator="2" capacity="4" discreteInclusion="false" enableOverApproximation="false" enableUnderApproximation="false" extrapolationOption="AUTOMATIC" gcd="true" hashTableSize="MB_16" inclusionPlaces="*NONE*" name="Reachability" overApproximation="true" pTrie="true" query="EF true" reduction="true" reductionOption="VerifyTAPNdiscreteVerification" searchOption="HEURISTIC" symmetry="true" timeDarts="false" traceOption="NONE" useStubbornReduction="true" useTarOption="false"/>
+  <k-bound bound="3"/>
+  <feature isGame="false" isTimed="true"/>
+</pnml>

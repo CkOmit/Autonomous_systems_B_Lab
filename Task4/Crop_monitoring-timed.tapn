@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<pnml xmlns="http://www.informatik.hu-berlin.de/top/pnml/ptNetb">
+  <shared-transition name="Transmit_Data" player="0" urgent="false"/>
+  <shared-transition name="Processing_Data" player="0" urgent="false"/>
+  <shared-transition name="Data_Read" player="0" urgent="false"/>
+  <shared-transition name="Transmit_Data_To_Drone" player="0" urgent="false"/>
+  <shared-transition name="Transmit_Data_To_Irrigation_System" player="0" urgent="false"/>
+  <shared-transition name="Receive_data_from_Drone" player="0" urgent="false"/>
+  <net active="true" id="monitoring" type="P/T net">
+    <place displayName="true" id="Start" initialMarking="1" invariant="&lt; inf" name="Start" nameOffsetX="0" nameOffsetY="0" positionX="60" positionY="165"/>
+    <place displayName="true" id="Water_Level_Measured" initialMarking="0" invariant="&lt; inf" name="Water_Level_Measured" nameOffsetX="0" nameOffsetY="0" positionX="375" positionY="165"/>
+    <place displayName="true" id="Data_Transmission" initialMarking="0" invariant="&lt; inf" name="Data_Transmission" nameOffsetX="130" nameOffsetY="21" positionX="405" positionY="345"/>
+    <place displayName="true" id="End" initialMarking="0" invariant="&lt; inf" name="End" nameOffsetX="-19" nameOffsetY="26" positionX="120" positionY="420"/>
+    <transition angle="0" displayName="true" id="Get_water_level" infiniteServer="false" name="Get_water_level" nameOffsetX="0" nameOffsetY="0" player="0" positionX="225" positionY="165" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="Transmit_data_to_server" infiniteServer="false" name="Transmit_data_to_server" nameOffsetX="156" nameOffsetY="19" player="0" positionX="405" positionY="240" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="Data_transferd" infiniteServer="false" name="Data_transferd" nameOffsetX="119" nameOffsetY="22" player="0" positionX="360" positionY="420" priority="0" urgent="false"/>
+    <transition angle="0" displayName="true" id="Repeat" infiniteServer="false" name="Repeat" nameOffsetX="3" nameOffsetY="22" player="0" positionX="60" positionY="330" priority="0" urgent="false"/>
+    <arc id="A0" inscription="[0,inf)" nameOffsetX="1" nameOffsetY="0" source="Start" target="Get_water_level" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="90" yCoord="180"/>
+      <arcpath arcPointType="false" id="1" xCoord="234" yCoord="180"/>
+    </arc>
+    <arc id="A1" inscription="1" nameOffsetX="0" nameOffsetY="0" source="Get_water_level" target="Water_Level_Measured" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="244" yCoord="180"/>
+      <arcpath arcPointType="false" id="1" xCoord="375" yCoord="180"/>
+    </arc>
+    <arc id="A2" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="Water_Level_Measured" target="Transmit_data_to_server" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="396" yCoord="193"/>
+      <arcpath arcPointType="false" id="1" xCoord="420" yCoord="240"/>
+    </arc>
+    <arc id="A3" inscription="1" nameOffsetX="0" nameOffsetY="0" source="Transmit_data_to_server" target="Data_Transmission" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="420" yCoord="270"/>
+      <arcpath arcPointType="false" id="1" xCoord="420" yCoord="345"/>
+    </arc>
+    <arc id="A4" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="Data_Transmission" target="Data_transferd" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="412" yCoord="373"/>
+      <arcpath arcPointType="false" id="1" xCoord="379" yCoord="435"/>
+    </arc>
+    <arc id="A5" inscription="1" nameOffsetX="0" nameOffsetY="0" source="Data_transferd" target="End" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="369" yCoord="435"/>
+      <arcpath arcPointType="false" id="1" xCoord="150" yCoord="435"/>
+    </arc>
+    <arc id="A6" inscription="[0,inf)" nameOffsetX="0" nameOffsetY="0" source="End" target="Repeat" type="timed" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="127" yCoord="422"/>
+      <arcpath arcPointType="false" id="1" xCoord="79" yCoord="345"/>
+    </arc>
+    <arc id="A7" inscription="1" nameOffsetX="0" nameOffsetY="0" source="Repeat" target="Start" type="normal" weight="1">
+      <arcpath arcPointType="false" id="0" xCoord="75" yCoord="330"/>
+      <arcpath arcPointType="false" id="1" xCoord="75" yCoord="195"/>
+    </arc>
+  </net>
+  <k-bound bound="3"/>
+  <feature isGame="false" isTimed="true"/>
+</pnml>
